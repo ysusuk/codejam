@@ -1,4 +1,4 @@
-data TestCase = TestCase3 Int String String
+data TestCase = TestCase [Int] [String]
 
 main :: IO()
 main = do
@@ -21,18 +21,14 @@ transform :: [[String]] -> [TestCase]
 transform =
   let
     createTestCase gr = case gr of
-      [a,b,c] -> TestCase3 (read a :: Int) b c
+      (meta:test) -> TestCase (readInts meta) test
   in map createTestCase
 
 process :: TestCase -> String
 process testCase =
   case testCase of
-    TestCase3 n str1 str2 ->
-      let
-        ints1 = readInts str1
-        ints2 = readInts str2
-      in
-        show n ++ show ints1 ++ show ints2
+    TestCase meta test ->
+        show meta ++ show test
 
 readInts :: String -> [Int]
 readInts str = map read $ words str

@@ -1,4 +1,4 @@
-data TestCase = TestCase Int Int [String]
+data TestCase = TestCase [Int] [String]
 
 main :: IO()
 main = do
@@ -16,31 +16,22 @@ group [] = []
 group xs =
   let
     rowsAndCols = readInts (head xs)
-    rows = rowsAndCols !! 0
+    rows = rowsAndCols !! 0 + 1
   in
-    take rows xs : (group (drop rows xs))
+    take rows xs : group (drop rows xs)
 
 transform :: [[String]] -> [TestCase]
 transform =
   let
     createTestCase gr = case gr of
-      (str:strs) ->
-        let
-          rowsAndCols = readInts str
-        in
-          TestCase (rowsAndCols !! 0) (rowsAndCols !! 1) strs
+      (meta:test) -> TestCase (readInts meta) test
   in map createTestCase
 
 process :: TestCase -> String
 process testCase =
   case testCase of
-    TestCase r c str ->
-      let
-        rows = r
-        cols = c
-        grid = str
-      in
-        show r ++ show c ++ show grid
+    TestCase meta test ->
+        show meta ++ show test
 
 readInts :: String -> [Int]
 readInts str = map read $ words str
