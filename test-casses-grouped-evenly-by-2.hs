@@ -4,7 +4,7 @@ main :: IO()
 main = do
   contents <- getContents
   let lns = tail . lines $ contents
-      testCasses = transform $ group 3 lns
+      testCasses = transform $ group 2 lns
       outs = map process testCasses
   putStr $ unlines (map appendCaseAndNum $ zip [1..] outs)
 
@@ -20,15 +20,12 @@ group n list
 transform :: [[String]] -> [TestCase]
 transform =
   let
-    createTestCase gr = case gr of
-      (meta:test) -> TestCase (readInts meta) test
+    createTestCase (meta:test) = TestCase (readInts meta) test
   in map createTestCase
 
 process :: TestCase -> String
-process testCase =
-  case testCase of
-    TestCase meta test ->
-        show meta ++ show test
+process (TestCase meta test) =
+  show meta ++ show test
 
 readInts :: String -> [Int]
 readInts str = map read $ words str

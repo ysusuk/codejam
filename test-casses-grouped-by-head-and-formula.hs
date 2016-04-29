@@ -4,27 +4,26 @@ main :: IO()
 main = do
   contents <- getContents
   let lns = tail . lines $ contents
-      testCasses = transform $ group lns
+      testCasses = transform $ group (\x -> 2*x - 1) lns
       outs = map process testCasses
   putStr $ unlines (map appendCaseAndNum $ zip [1..] outs)
 
 appendCaseAndNum :: (Int, String) -> String
 appendCaseAndNum (n, str) = "Case#" ++ show n ++ ": " ++ str
 
-group :: [String] -> [[String]]
-group [] = []
-group xs =
+group :: (Int -> Int) -> [String] -> [[String]]
+group _ [] = []
+group f xs =
   let
     rowsAndCols = readInts (head xs)
-    rows = rowsAndCols !! 0 + 1
+    rows = 1 + (f $ rowsAndCols !! 0)
   in
-    take rows xs : group (drop rows xs)
+    take rows xs : group f (drop rows xs)
 
 transform :: [[String]] -> [TestCase]
 transform =
   let
-    createTestCase gr = case gr of
-      (meta:test) -> TestCase (readInts meta) test
+    createTestCase (meta:test) = TestCase (readInts meta) test
   in map createTestCase
 
 process :: TestCase -> String
