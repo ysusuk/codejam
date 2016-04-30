@@ -9,7 +9,7 @@ main = do
   putStr $ unlines (map appendCaseAndNum $ zip [1..] outs)
 
 appendCaseAndNum :: (Int, String) -> String
-appendCaseAndNum (n, str) = "Case#" ++ show n ++ ": " ++ str
+appendCaseAndNum (n, str) = "Case #" ++ show n ++ ": " ++ str
 
 group :: Int -> [a] -> [[a]]
 group _ [] = []
@@ -32,7 +32,7 @@ process (TestCase meta test) =
 
 minEaten1 :: [Int] -> Int
 minEaten1 [x] = 0
-minEaten1 (x:y:xs) = (max 0 y - x) + minEaten1 (y:xs)
+minEaten1 (x:y:xs) = abs (y - x) + minEaten1 (y:xs)
 
 
 readInts :: String -> [Int]
