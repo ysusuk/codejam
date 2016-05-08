@@ -9,7 +9,7 @@ main = do
   putStr $ unlines (map appendCaseAndNum $ zip [1..] outs)
 
 appendCaseAndNum :: (Int, String) -> String
-appendCaseAndNum (n, str) = "Case#" ++ show n ++ ": " ++ str
+appendCaseAndNum (n, str) = "Case #" ++ show n ++ ": " ++ str
 
 group :: (Int -> Int) -> [String] -> [[String]]
 group _ [] = []
